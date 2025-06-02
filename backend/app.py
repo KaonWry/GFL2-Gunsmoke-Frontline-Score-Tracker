@@ -59,10 +59,10 @@ def get_attempts():
     """)
     rows = cursor.fetchall()
     conn.close()
-    # Convert rows to list of dicts
     attempts = []
     for row in rows:
         attempts.append({
+            "id": row[0],
             "player_name": row[1],
             "score": row[2],
             "doll1": row[3],
