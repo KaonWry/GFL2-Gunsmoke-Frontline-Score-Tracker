@@ -25,7 +25,8 @@ export default function RecapPage() {
               <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Highest Score</th>
               <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Total Score</th>
               <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Count</th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Efficiency</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Absolute Efficiency</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Relative Efficiency</th>
               <th className="px-6 py-3 border-b border-gray-200 text-center">Peak-Average Gap</th>
             </tr>
           </thead>
@@ -40,8 +41,13 @@ export default function RecapPage() {
                 <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{player.total_score}</td>
                 <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{player.attempts}</td>
                 <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {typeof player.efficiency === "number"
-                    ? (player.efficiency * 100).toFixed(2) + '%'
+                  {typeof player.absolute_efficiency === "number"
+                    ? (player.absolute_efficiency * 100).toFixed(2) + '%'
+                    : ""}
+                </td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
+                  {typeof player.relative_efficiency === "number"
+                    ? (player.relative_efficiency * 100).toFixed(2) + '%'
                     : ""}
                 </td>
                 <td className="px-2 py-1 border-b border-gray-200 text-center">
@@ -53,7 +59,7 @@ export default function RecapPage() {
             ))}
             {recap.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center py-4 text-gray-500">
+                <td colSpan={7} className="text-center py-4 text-gray-500">
                   No player data found.
                 </td>
               </tr>

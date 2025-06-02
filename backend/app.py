@@ -97,14 +97,20 @@ def recap_players():
     conn.close()
     if df.empty:
         return jsonify([])
+    max_attempts = 14
     recap_df = df.groupby('player_name').agg(
         highest_score=pd.NamedAgg(column='score', aggfunc='max'),
         total_score=pd.NamedAgg(column='score', aggfunc='sum'),
         attempts=pd.NamedAgg(column='score', aggfunc='count')
     ).reset_index().sort_values('total_score', ascending=False)
-    recap_df['efficiency'] = recap_df.apply(
+    recap_df['relative_efficiency'] = recap_df.apply(
         lambda row: row['total_score'] / (row['highest_score'] * row['attempts'])
         if row['highest_score'] > 0 and row['attempts'] > 0 else 0,
+        axis=1
+    )
+    recap_df['absolute_efficiency'] = recap_df.apply(
+        lambda row: row['total_score'] / (row['highest_score'] * max_attempts)
+        if row['highest_score'] > 0 and max_attempts > 0 else 0,
         axis=1
     )
     recap_df['peak_average_gap'] = recap_df['highest_score'] - (recap_df['total_score'] / recap_df['attempts'])

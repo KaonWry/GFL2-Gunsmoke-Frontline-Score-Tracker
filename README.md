@@ -89,19 +89,23 @@ Below are the explanations for each metric:
 - **Count:**  
   The total number of attempts the player has made.
 
-- **Efficiency:**  
-  A measure of how close the player's total score is to their theoretical maximum (if every attempt matched their highest score). Indicates how efficiently the player is performing relative to their potential. 100% means every attempt matched their best; lower values mean more variation or missed opportunities.
+- **Absolute Efficiency:**  
+  A measure of how close the player's total score is to their theoretical maximum, assuming they played every possible attempt (7 days, twice a day). A lower value means the player either missed attempts or didn't perform close to their best in each attempt.
 
   _Formula:_  
-  `Efficiency = Total Score / (Highest Score × Count)`  
-  This value is shown as a percentage (%).  
+  `Absolute Efficiency = Total Score / (Highest Score × 14)`  
 
+- **Relative Efficiency:**  
+  A measure of how close the player's total score is to their theoretical maximum, based only on the number of attempts they actually made. It shows how efficiently a player performed in the attempts they actually made, regardless of how many times they played.
+
+  _Formula:_  
+  `Relative Efficiency = Total Score / (Highest Score × Attempt Count)`  
 
 - **Peak-Average Gap:**  
   The difference between the player's highest score and their average score. It shows the consistency of the player. A smaller gap means the player performs close to their best most of the time, while a larger gap suggests occasional high peaks but lower average performance.
 
   _Formula:_  
-  `Peak-Average Gap = Highest Score - (Total Score / Count)`  
+  `Peak-Average Gap = Highest Score - (Total Score / Count)`
 
 ---
 
