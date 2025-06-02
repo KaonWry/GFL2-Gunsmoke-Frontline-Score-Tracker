@@ -34,33 +34,36 @@ export default function LogPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6 text-center">Attempts Log</h1>
-      <div className="overflow-x-auto w-full max-w-5xl">
-        <table className="min-w-full border border-gray-200 bg-transparent text-center border-separate border-spacing-0">
+      <div className="overflow-x-auto w-full max-w-5xl flex justify-center">
+        <table className="table-auto mx-auto border border-gray-200 bg-transparent text-center border-separate border-spacing-0">
           <thead>
             <tr className="bg-gray-100">
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Player Name</th>
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Score</th>
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 1</th>
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 2</th>
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 3</th>
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 4</th>
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 5</th>
-              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Date</th>
-              <th className="px-3 py-2 border-b border-gray-200 text-center">Action</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Player Name</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Score</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Doll 1</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Doll 2</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Doll 3</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Doll 4</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Doll 5</th>
+              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Date</th>
+              <th className="px-6 py-3 border-b border-gray-200 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
-            {attempts.map(a => (
-              <tr key={a.id} className="hover:bg-gray-50">
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.player_name}</td>
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.score}</td>
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll1}</td>
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll2}</td>
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll3}</td>
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll4}</td>
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll5}</td>
-                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.date}</td>
-                <td className="px-3 py-2 border-b border-gray-200 text-center">
+            {attempts.map((a, idx) => (
+              <tr
+                key={a.id}
+                className={idx % 2 === 0 ? "bg-white" : "bg-gray-100"}
+              >
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.player_name}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.score}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.doll1}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.doll2}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.doll3}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.doll4}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.doll5}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{a.date}</td>
+                <td className="px-2 py-1 border-b border-gray-200 text-center">
                   <button
                     onClick={() => handleDeleteClick(a.id)}
                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors"
@@ -80,7 +83,6 @@ export default function LogPage() {
           </tbody>
         </table>
       </div>
-      {/* Deletion Confirmation Popup */}
       {confirmId !== null && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">

@@ -75,6 +75,36 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
 
+## Metrics Explained
+
+The **Recap** page displays several player metrics.  
+Below are the explanations for each metric:
+
+- **Highest Score:**  
+  The single highest score achieved by the player across all their attempts.
+
+- **Total Score:**  
+  The sum of all scores from all attempts made by the player. 
+
+- **Count:**  
+  The total number of attempts the player has made.
+
+- **Efficiency:**  
+  A measure of how close the player's total score is to their theoretical maximum (if every attempt matched their highest score). Indicates how efficiently the player is performing relative to their potential. 100% means every attempt matched their best; lower values mean more variation or missed opportunities.
+
+  _Formula:_  
+  `Efficiency = Total Score / (Highest Score × Count)`  
+  This value is shown as a percentage (%).  
+
+
+- **Peak-Average Gap:**  
+  The difference between the player's highest score and their average score. It shows the consistency of the player. A smaller gap means the player performs close to their best most of the time, while a larger gap suggests occasional high peaks but lower average performance.
+
+  _Formula:_  
+  `Peak-Average Gap = Highest Score - (Total Score / Count)`  
+
+---
+
 ## API Endpoints
 
 - `POST /add_attempt`  
@@ -86,9 +116,9 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
     "score": 2345,
     "doll1": "Klukai",
     "doll2": "Mechty",
-    "doll3": "",
-    "doll4": "",
-    "doll5": ""
+    "doll3": "Suomi",
+    "doll4": "Qiongjiu",
+    "doll5": "Sharkry"
   }
   ```
 
