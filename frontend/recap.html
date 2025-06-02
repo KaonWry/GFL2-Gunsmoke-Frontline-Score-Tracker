@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gunsmoke Score Tracker - Recap</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; margin-top: 2em; }
+        th, td { border: 1px solid #ccc; padding: 0.5em; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Attempts Recap</h1>
+    <table id="attemptsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Player Name</th>
+                <th>Score</th>
+                <th>Doll 1</th>
+                <th>Doll 2</th>
+                <th>Doll 3</th>
+                <th>Doll 4</th>
+                <th>Doll 5</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+    <script>
+    async function fetchAttempts() {
+        const response = await fetch('http://localhost:5000/get_attempts');
+        const attempts = await response.json();
+        const tbody = document.querySelector('#attemptsTable tbody');
+        tbody.innerHTML = '';
+        attempts.forEach(attempt => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${attempt.id}</td>
+                <td>${attempt.player_name}</td>
+                <td>${attempt.score}</td>
+                <td>${attempt.doll1 || ''}</td>
+                <td>${attempt.doll2 || ''}</td>
+                <td>${attempt.doll3 || ''}</td>
+                <td>${attempt.doll4 || ''}</td>
+                <td>${attempt.doll5 || ''}</td>
+                <td>${attempt.date || ''}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+    fetchAttempts();
+    </script>
+</body>
+</html>

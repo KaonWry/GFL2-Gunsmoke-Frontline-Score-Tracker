@@ -45,5 +45,34 @@ def add_attempt():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/get_attempts', methods=['GET'])
+def get_attempts():
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(backend_dir, "raid_data.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, player_name, score, doll1, doll2, doll3, doll4, doll5, date
+        FROM attempts
+        ORDER BY id DESC
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    # Convert rows to list of dicts
+    attempts = []
+    for row in rows:
+        attempts.append({
+            "id": row[0],
+            "player_name": row[1],
+            "score": row[2],
+            "doll1": row[3],
+            "doll2": row[4],
+            "doll3": row[5],
+            "doll4": row[6],
+            "doll5": row[7],
+            "date": row[8]
+        })
+    return jsonify(attempts)
+
 if __name__ == '__main__':
     app.run(debug=True)
