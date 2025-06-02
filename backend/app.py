@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
 import os
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -62,7 +63,6 @@ def get_attempts():
     attempts = []
     for row in rows:
         attempts.append({
-            "id": row[0],
             "player_name": row[1],
             "score": row[2],
             "doll1": row[3],
@@ -88,6 +88,22 @@ def delete_attempt(attempt_id):
         return jsonify({'message': f'Attempt with id {attempt_id} deleted.'})
     else:
         return jsonify({'error': f'No attempt found with id {attempt_id}.'}), 404
+
+@app.route('/recap_players', methods=['GET'])
+def recap_players():
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(backend_dir, "raid_data.db")
+    conn = sqlite3.connect(db_path)
+    df = pd.read_sql_query("SELECT player_name, score FROM attempts", conn)
+    conn.close()
+    if df.empty:
+        return jsonify([])
+    recap_df = df.groupby('player_name').agg(
+        highest_score=pd.NamedAgg(column='score', aggfunc='max'),
+        total_score=pd.NamedAgg(column='score', aggfunc='sum')
+    ).reset_index().sort_values('total_score', ascending=False)
+    recap = recap_df.to_dict(orient='records')
+    return jsonify(recap)
 
 if __name__ == '__main__':
     app.run(debug=True)
