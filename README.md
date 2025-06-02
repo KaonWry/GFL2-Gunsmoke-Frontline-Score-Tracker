@@ -14,34 +14,6 @@ Built with Flask (Python) for the backend and a Next.js (React) frontend.
 
 ---
 
-## Project Structure
-
-```
-gfl2-gunsmoke-score-tracker/
-├── backend/
-│   ├── app.py           # Flask API (add/get/delete/recap attempts)
-│   ├── db_init.py       # Initialize the database
-│   ├── db_clear.py      # Reset the attempts table
-│   ├── raid_data.db     # SQLite database file (created after init)
-├── frontend/
-│   ├── app/
-│   │   ├── components/
-│   │   │   └── Navbar.js      # Navigation bar component
-│   │   ├── input/
-│   │   │   └── page.js        # Add Attempt page
-│   │   ├── log/
-│   │   │   └── page.js        # Log page (all attempts, delete support)
-│   │   ├── recap/
-│   │   │   └── page.js        # Recap analytics page
-│   │   ├── layout.js          # Root layout with navbar
-│   │   ├── page.js            # Default export of input/page.js
-│   │   └── globals.css        # Global styles
-│   ├── package.json           # Frontend dependencies
-│   └── ...                    # Other Next.js config files
-```
-
----
-
 ## Setup & Usage
 
 ### 1. Backend
