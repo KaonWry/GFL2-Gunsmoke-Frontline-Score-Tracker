@@ -74,5 +74,20 @@ def get_attempts():
         })
     return jsonify(attempts)
 
+@app.route('/delete_attempt/<int:attempt_id>', methods=['DELETE'])
+def delete_attempt(attempt_id):
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(backend_dir, "raid_data.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM attempts WHERE id = ?", (attempt_id,))
+    conn.commit()
+    deleted = cursor.rowcount
+    conn.close()
+    if deleted:
+        return jsonify({'message': f'Attempt with id {attempt_id} deleted.'})
+    else:
+        return jsonify({'error': f'No attempt found with id {attempt_id}.'}), 404
+
 if __name__ == '__main__':
     app.run(debug=True)

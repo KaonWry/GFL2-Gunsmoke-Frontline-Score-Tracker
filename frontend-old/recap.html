@@ -24,6 +24,7 @@
                 <th>Doll 4</th>
                 <th>Doll 5</th>
                 <th>Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -48,10 +49,25 @@
                 <td>${attempt.doll4 || ''}</td>
                 <td>${attempt.doll5 || ''}</td>
                 <td>${attempt.date || ''}</td>
+                <td><button onclick="deleteAttempt(${attempt.id})">Delete</button></td>
             `;
             tbody.appendChild(tr);
         });
     }
+
+    async function deleteAttempt(id) {
+        if (!confirm('Are you sure you want to delete this attempt?')) return;
+        const response = await fetch(`http://localhost:5000/delete_attempt/${id}`, {
+            method: 'DELETE'
+        });
+        const result = await response.json();
+        if (response.ok) {
+            fetchAttempts();
+        } else {
+            alert(result.error || 'Failed to delete attempt.');
+        }
+    }
+
     fetchAttempts();
     </script>
 </body>
