@@ -1,8 +1,20 @@
 'use client';
 import { useEffect, useState } from "react";
 
+const columns = [
+  { key: "player_name", label: "Player Name" },
+  { key: "highest_score", label: "Highest Score" },
+  { key: "total_score", label: "Total Score" },
+  { key: "attempts", label: "Count" },
+  { key: "absolute_efficiency", label: "Absolute Efficiency" },
+  { key: "relative_efficiency", label: "Relative Efficiency" },
+  { key: "peak_average_gap", label: "Peak-Average Gap" },
+];
+
 export default function RecapPage() {
   const [recap, setRecap] = useState([]);
+  const [sortKey, setSortKey] = useState("player_name"); // Default to player_name
+  const [sortOrder, setSortOrder] = useState("asc");     // Default to ascending
 
   const fetchRecap = async () => {
     const res = await fetch("http://localhost:5000/recap_players");
@@ -14,6 +26,40 @@ export default function RecapPage() {
     fetchRecap();
   }, []);
 
+  const handleSort = (key) => {
+    if (sortKey === key) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortOrder("asc");
+    }
+  };
+
+  const sortedRecap = [...recap].sort((a, b) => {
+    let aValue = a[sortKey];
+    let bValue = b[sortKey];
+
+    // For player_name, sort as string
+    if (sortKey === "player_name") {
+      aValue = aValue?.toLowerCase() || "";
+      bValue = bValue?.toLowerCase() || "";
+      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    }
+
+    // For numbers, sort numerically
+    aValue = typeof aValue === "number" ? aValue : -Infinity;
+    bValue = typeof bValue === "number" ? bValue : -Infinity;
+    return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+  });
+
+  // Helper for showing sort arrow
+  const sortArrow = (key) => {
+    if (sortKey !== key) return "";
+    return sortOrder === "asc" ? " ▲" : " ▼";
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6 text-center">Player Recap</h1>
@@ -21,17 +67,21 @@ export default function RecapPage() {
         <table className="table-auto mx-auto border border-gray-200 bg-transparent text-center border-separate border-spacing-0">
           <thead>
             <tr className="bg-gray-100">
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Player Name</th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Highest Score</th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Total Score</th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Count</th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Absolute Efficiency</th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">Relative Efficiency</th>
-              <th className="px-6 py-3 border-b border-gray-200 text-center">Peak-Average Gap</th>
+              {columns.map((col, idx) => (
+                <th
+                  key={col.key}
+                  className={`px-6 py-3 border-b border-r border-gray-200 text-center cursor-pointer select-none`}
+                  onClick={() => handleSort(col.key)}
+                  style={idx === columns.length - 1 ? { borderRight: 0 } : {}}
+                >
+                  {col.label}
+                  <span className="ml-1">{sortArrow(col.key)}</span>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {recap.map((player, idx) => (
+            {sortedRecap.map((player, idx) => (
               <tr
                 key={player.player_name}
                 className={idx % 2 === 0 ? "bg-white" : "bg-gray-100"}
@@ -59,7 +109,7 @@ export default function RecapPage() {
             ))}
             {recap.length === 0 && (
               <tr>
-                <td colSpan={7} className="text-center py-4 text-gray-500">
+                <td colSpan={columns.length} className="text-center py-4 text-gray-500">
                   No player data found.
                 </td>
               </tr>

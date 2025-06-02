@@ -160,12 +160,12 @@ python db_clear.py
   - Add endpoints for analytics (`/recap_players`).
   - Add pagination for large numbers of attempts.
 
+- [x] **Frontend Enhancements**
+  - Show loading indicators and error messages.
+  - Add confirmation dialogs for deleting attempts
+
 - [ ] **Export Data**
   - Add a button to export all attempts as CSV or Excel.
 
 - [ ] **Responsive Design**
   - Improve frontend layout for mobile and tablet devices.
-
-- [ ] **Frontend Enhancements**
-  - Show loading indicators and error messages.
-  - Add confirmation dialogs for deleting attempts
