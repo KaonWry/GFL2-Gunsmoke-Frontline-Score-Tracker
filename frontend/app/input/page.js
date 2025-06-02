@@ -31,40 +31,73 @@ export default function InputPage() {
   };
 
   return (
-    <div>
-      <h1>Add Attempt</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Player Name:
-          <input name="player_name" value={form.player_name} onChange={handleChange} required />
-        </label><br />
-        <label>
-          Score:
-          <input name="score" type="number" value={form.score} onChange={handleChange} required min="0" />
-        </label><br />
-        <label>
-          Doll 1:
-          <input name="doll1" value={form.doll1} onChange={handleChange} />
-        </label><br />
-        <label>
-          Doll 2:
-          <input name="doll2" value={form.doll2} onChange={handleChange} />
-        </label><br />
-        <label>
-          Doll 3:
-          <input name="doll3" value={form.doll3} onChange={handleChange} />
-        </label><br />
-        <label>
-          Doll 4:
-          <input name="doll4" value={form.doll4} onChange={handleChange} />
-        </label><br />
-        <label>
-          Doll 5:
-          <input name="doll5" value={form.doll5} onChange={handleChange} />
-        </label><br />
-        <button type="submit" style={{ marginTop: "1.5em", padding: "0.7em 1.5em" }}>Submit</button>
-      </form>
-      <div style={{ marginTop: "1em" }}>{result}</div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+        <h1 className="text-2xl font-bold mb-6 text-center">Add Attempt</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1" htmlFor="player_name">
+              Player Name:
+            </label>
+            <input
+              id="player_name"
+              name="player_name"
+              value={form.player_name}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1" htmlFor="score">
+              Score:
+            </label>
+            <input
+              id="score"
+              name="score"
+              type="number"
+              value={form.score}
+              onChange={handleChange}
+              required
+              min="0"
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
+            />
+          </div>
+          {[1,2,3,4,5].map(i => (
+            <div key={i}>
+              <label className="block text-sm font-medium mb-1" htmlFor={`doll${i}`}>
+                Doll {i}:
+              </label>
+              <input
+                id={`doll${i}`}
+                name={`doll${i}`}
+                value={form[`doll${i}`]}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
+              />
+            </div>
+          ))}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors mt-4 font-semibold"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      {result && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
+            <div className="mb-4 text-gray-800">{result}</div>
+            <button
+              onClick={() => setResult("")}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

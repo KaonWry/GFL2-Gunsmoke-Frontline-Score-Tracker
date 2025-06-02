@@ -35,7 +35,6 @@ def add_attempt():
         return jsonify({'error': 'Missing player_name or score'}), 400
     try:
         add_attempt_to_db(player_name, int(score), dolls)
-        # Build a descriptive message
         dolls_desc = ', '.join([d if d else '(none)' for d in dolls])
         message = (
             f"Added attempt: Player Name = '{player_name}', "

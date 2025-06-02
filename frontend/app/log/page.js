@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function LogPage() {
   const [attempts, setAttempts] = useState([]);
+  const [confirmId, setConfirmId] = useState(null);
 
   const fetchAttempts = async () => {
     const res = await fetch("http://localhost:5000/get_attempts");
@@ -10,10 +11,20 @@ export default function LogPage() {
     setAttempts(data);
   };
 
-  const deleteAttempt = async (id) => {
-    if (!confirm("Are you sure you want to delete this attempt?")) return;
-    await fetch(`http://localhost:5000/delete_attempt/${id}`, { method: "DELETE" });
-    fetchAttempts();
+  const handleDeleteClick = (id) => {
+    setConfirmId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (confirmId !== null) {
+      await fetch(`http://localhost:5000/delete_attempt/${confirmId}`, { method: "DELETE" });
+      setConfirmId(null);
+      fetchAttempts();
+    }
+  };
+
+  const cancelDelete = () => {
+    setConfirmId(null);
   };
 
   useEffect(() => {
@@ -21,40 +32,78 @@ export default function LogPage() {
   }, []);
 
   return (
-    <div style={{ margin: "2em" }}>
-      <h1>Attempts Log</h1>
-      <table style={{ borderCollapse: "collapse", width: "100%", marginTop: "2em" }}>
-        <thead>
-          <tr>
-            <th>Player Name</th>
-            <th>Score</th>
-            <th>Doll 1</th>
-            <th>Doll 2</th>
-            <th>Doll 3</th>
-            <th>Doll 4</th>
-            <th>Doll 5</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {attempts.map(a => (
-            <tr key={a.id}>
-              <td>{a.player_name}</td>
-              <td>{a.score}</td>
-              <td>{a.doll1}</td>
-              <td>{a.doll2}</td>
-              <td>{a.doll3}</td>
-              <td>{a.doll4}</td>
-              <td>{a.doll5}</td>
-              <td>{a.date}</td>
-              <td>
-                <button onClick={() => deleteAttempt(a.id)}>Delete</button>
-              </td>
+    <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
+      <h1 className="text-2xl font-bold mb-6 text-center">Attempts Log</h1>
+      <div className="overflow-x-auto w-full max-w-5xl">
+        <table className="min-w-full border border-gray-200 bg-transparent text-center border-separate border-spacing-0">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Player Name</th>
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Score</th>
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 1</th>
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 2</th>
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 3</th>
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 4</th>
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Doll 5</th>
+              <th className="px-3 py-2 border-b border-r border-gray-200 text-center">Date</th>
+              <th className="px-3 py-2 border-b border-gray-200 text-center">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {attempts.map(a => (
+              <tr key={a.id} className="hover:bg-gray-50">
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.player_name}</td>
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.score}</td>
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll1}</td>
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll2}</td>
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll3}</td>
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll4}</td>
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.doll5}</td>
+                <td className="px-3 py-2 border-b border-r border-gray-200 text-center">{a.date}</td>
+                <td className="px-3 py-2 border-b border-gray-200 text-center">
+                  <button
+                    onClick={() => handleDeleteClick(a.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {attempts.length === 0 && (
+              <tr>
+                <td colSpan={9} className="text-center py-4 text-gray-500">
+                  No attempts found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      {/* Deletion Confirmation Popup */}
+      {confirmId !== null && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
+            <div className="mb-4 text-gray-800">
+              Are you sure you want to delete this attempt?
+            </div>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={confirmDelete}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+              >
+                Delete
+              </button>
+              <button
+                onClick={cancelDelete}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
