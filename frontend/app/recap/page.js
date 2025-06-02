@@ -13,8 +13,8 @@ const columns = [
 
 export default function RecapPage() {
   const [recap, setRecap] = useState([]);
-  const [sortKey, setSortKey] = useState("player_name"); // Default to player_name
-  const [sortOrder, setSortOrder] = useState("asc");     // Default to ascending
+  const [sortKey, setSortKey] = useState("player_name");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchRecap = async () => {
     const res = await fetch("http://localhost:5000/recap_players");
@@ -35,11 +35,14 @@ export default function RecapPage() {
     }
   };
 
+  const handleExportCSV = () => {
+    window.open("http://localhost:5000/export_csv?table=recap", "_blank");
+  };
+
   const sortedRecap = [...recap].sort((a, b) => {
     let aValue = a[sortKey];
     let bValue = b[sortKey];
 
-    // For player_name, sort as string
     if (sortKey === "player_name") {
       aValue = aValue?.toLowerCase() || "";
       bValue = bValue?.toLowerCase() || "";
@@ -48,13 +51,11 @@ export default function RecapPage() {
       return 0;
     }
 
-    // For numbers, sort numerically
     aValue = typeof aValue === "number" ? aValue : -Infinity;
     bValue = typeof bValue === "number" ? bValue : -Infinity;
     return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
   });
 
-  // Helper for showing sort arrow
   const sortArrow = (key) => {
     if (sortKey !== key) return "";
     return sortOrder === "asc" ? " ▲" : " ▼";
@@ -117,6 +118,12 @@ export default function RecapPage() {
           </tbody>
         </table>
       </div>
+      <button
+        onClick={handleExportCSV}
+        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+      >
+        Export to CSV
+      </button>
     </div>
   );
 }

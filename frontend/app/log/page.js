@@ -31,6 +31,10 @@ export default function LogPage() {
     fetchAttempts();
   }, []);
 
+  const handleExportCSV = () => {
+    window.open("http://localhost:5000/export_csv?table=log", "_blank");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6 text-center">Attempts Log</h1>
@@ -83,6 +87,12 @@ export default function LogPage() {
           </tbody>
         </table>
       </div>
+      <button
+        onClick={handleExportCSV}
+        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+      >
+        Export to CSV
+      </button>
       {confirmId !== null && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">

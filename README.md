@@ -164,7 +164,7 @@ python db_clear.py
   - Show loading indicators and error messages.
   - Add confirmation dialogs for deleting attempts
 
-- [ ] **Export Data**
+- [x] **Export Data**
   - Add a button to export all attempts as CSV or Excel.
 
 - [ ] **Responsive Design**
