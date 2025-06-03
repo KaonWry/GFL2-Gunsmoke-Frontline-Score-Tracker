@@ -1,5 +1,6 @@
 'use client';
 import { useState } from "react";
+import { API_BASE_URL } from "@/app/apiConfig";
 
 export default function InputPage() {
   const [form, setForm] = useState({
@@ -20,7 +21,7 @@ export default function InputPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setResult("");
-    const res = await fetch("http://localhost:5000/add_attempt", {
+    const res = await fetch(`${API_BASE_URL}/add_attempt`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),

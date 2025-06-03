@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/app/apiConfig";
 
 export default function LogPage() {
   const [attempts, setAttempts] = useState([]);
   const [confirmId, setConfirmId] = useState(null);
 
   const fetchAttempts = async () => {
-    const res = await fetch("http://localhost:5000/get_attempts");
+    const res = await fetch(`${API_BASE_URL}/get_attempts`);
     const data = await res.json();
     setAttempts(data);
   };
@@ -17,7 +18,7 @@ export default function LogPage() {
 
   const confirmDelete = async () => {
     if (confirmId !== null) {
-      await fetch(`http://localhost:5000/delete_attempt/${confirmId}`, { method: "DELETE" });
+      await fetch(`${API_BASE_URL}/delete_attempt/${confirmId}`, { method: "DELETE" });
       setConfirmId(null);
       fetchAttempts();
     }
@@ -32,7 +33,7 @@ export default function LogPage() {
   }, []);
 
   const handleExportCSV = () => {
-    window.open("http://localhost:5000/export_csv?table=log", "_blank");
+    window.open(`${API_BASE_URL}/export_csv?table=log`, "_blank");
   };
 
   return (

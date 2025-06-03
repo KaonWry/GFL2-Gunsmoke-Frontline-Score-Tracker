@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/app/apiConfig";
 
 const columns = [
   { key: "player_name", label: "Player Name" },
@@ -17,7 +18,7 @@ export default function RecapPage() {
   const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchRecap = async () => {
-    const res = await fetch("http://localhost:5000/recap_players");
+    const res = await fetch(`${API_BASE_URL}/recap_players`);
     const data = await res.json();
     setRecap(data);
   };
@@ -36,7 +37,7 @@ export default function RecapPage() {
   };
 
   const handleExportCSV = () => {
-    window.open("http://localhost:5000/export_csv?table=recap", "_blank");
+    window.open(`${API_BASE_URL}/export_csv?table=recap`, "_blank");
   };
 
   const sortedRecap = [...recap].sort((a, b) => {
