@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useEffect, useState } from "react";
 
 const GUNSMOKE_START = Date.UTC(2025, 5, 15, 9, 0, 0); // 15 June 2025 16:00 UTC+7 == 09:00 UTC
@@ -40,7 +40,9 @@ function getCurrentSession(now) {
       nowDate.getUTCFullYear(),
       nowDate.getUTCMonth(),
       nowDate.getUTCDate(),
-      RESET_HOUR_UTC, 0, 0
+      RESET_HOUR_UTC,
+      0,
+      0
     );
     if (now >= reset) {
       reset += 24 * 60 * 60 * 1000;
@@ -65,7 +67,12 @@ function getCurrentSession(now) {
 }
 
 export default function CountdownPage() {
-  const [session, setSession] = useState({ phase: null, label: "", day: null, resetCountdown: null });
+  const [session, setSession] = useState({
+    phase: null,
+    label: "",
+    day: null,
+    resetCountdown: null,
+  });
 
   useEffect(() => {
     function update() {
@@ -81,7 +88,7 @@ export default function CountdownPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <h1 className="text-4xl font-bold mb-6">{session.label}</h1>
       {session.phase === "in_session" && (
-        <div className="text-2xl font-mono">
+        <div className="text-4xl font-mono">
           {session.resetCountdown === null
             ? "Loading..."
             : `${formatTime(session.resetCountdown)} until server reset`}

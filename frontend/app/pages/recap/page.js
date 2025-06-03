@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/app/apiConfig";
 
@@ -88,18 +88,26 @@ export default function RecapPage() {
                 key={player.player_name}
                 className={idx % 2 === 0 ? "bg-white" : "bg-gray-100"}
               >
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{player.player_name}</td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{player.highest_score}</td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{player.total_score}</td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">{player.attempts}</td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
+                  {player.player_name}
+                </td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
+                  {player.highest_score}
+                </td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
+                  {player.total_score}
+                </td>
+                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
+                  {player.attempts}
+                </td>
                 <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
                   {typeof player.absolute_efficiency === "number"
-                    ? (player.absolute_efficiency * 100).toFixed(2) + '%'
+                    ? (player.absolute_efficiency * 100).toFixed(2) + "%"
                     : ""}
                 </td>
                 <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
                   {typeof player.relative_efficiency === "number"
-                    ? (player.relative_efficiency * 100).toFixed(2) + '%'
+                    ? (player.relative_efficiency * 100).toFixed(2) + "%"
                     : ""}
                 </td>
                 <td className="px-2 py-1 border-b border-gray-200 text-center">
@@ -111,7 +119,10 @@ export default function RecapPage() {
             ))}
             {recap.length === 0 && (
               <tr>
-                <td colSpan={columns.length} className="text-center py-4 text-gray-500">
+                <td
+                  colSpan={columns.length}
+                  className="text-center py-4 text-gray-500"
+                >
                   No player data found.
                 </td>
               </tr>

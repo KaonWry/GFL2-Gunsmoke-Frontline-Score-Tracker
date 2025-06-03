@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useState } from "react";
 import { API_BASE_URL } from "@/app/apiConfig";
 
@@ -28,7 +28,16 @@ export default function InputPage() {
     });
     const data = await res.json();
     setResult(data.message || data.error);
-    if (res.ok) setForm({ player_name: "", score: "", doll1: "", doll2: "", doll3: "", doll4: "", doll5: "" });
+    if (res.ok)
+      setForm({
+        player_name: "",
+        score: "",
+        doll1: "",
+        doll2: "",
+        doll3: "",
+        doll4: "",
+        doll5: "",
+      });
   };
 
   return (
@@ -37,7 +46,10 @@ export default function InputPage() {
         <h1 className="text-2xl font-bold mb-6 text-center">Add Attempt</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="player_name">
+            <label
+              className="block text-sm font-medium mb-1"
+              htmlFor="player_name"
+            >
               Player Name:
             </label>
             <input
@@ -64,9 +76,12 @@ export default function InputPage() {
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
             />
           </div>
-          {[1,2,3,4,5].map(i => (
+          {[1, 2, 3, 4, 5].map((i) => (
             <div key={i}>
-              <label className="block text-sm font-medium mb-1" htmlFor={`doll${i}`}>
+              <label
+                className="block text-sm font-medium mb-1"
+                htmlFor={`doll${i}`}
+              >
                 Doll {i}:
               </label>
               <input

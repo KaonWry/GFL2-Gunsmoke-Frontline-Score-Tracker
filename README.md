@@ -9,10 +9,11 @@ Built with Flask (Python) for the backend and a Next.js (React) frontend.
 
 - Add new player attempts with score and up to 5 dolls.
 - View all attempts inputted.
+- Import attempts from a CSV file.
+- Reset the database for clean testing or to start fresh.
 - View player analytics (highest score, total score, efficiency, etc.).
-- Countdown until the next Gunsmoke Frontline
-- Countdown until server reset and day counter during Gunsmoke Frontline
-- Reset the database for clean testing.
+- Countdown until the next Gunsmoke Frontline.
+- Countdown until server reset and day counter during Gunsmoke Frontline.
 - Export attempts and player analytics as a CSV file.
 
 ---
@@ -41,6 +42,7 @@ Run the Flask backend:
 ```sh
 python app.py
 ```
+
 The API will be available at [http://localhost:5000](http://localhost:5000).
 
 ---
@@ -61,6 +63,7 @@ Run the Next.js development server:
 ```sh
 npm run dev
 ```
+
 The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
@@ -72,7 +75,7 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 - **Add Attempt:**  
   Go to `/input` to add a new attempt.
 - **View Log:**  
-  Go to `/log` to see all attempts and delete attempt entries.
+  Go to `/log` to see, import, export, and delete attempts.
 - **View Recap:**  
   Go to `/recap` to see player analytics (highest score, total score, efficiency, etc.).
 - **Navigate:**  
@@ -89,7 +92,7 @@ Below are the explanations for each metric:
   The single highest score achieved by the player across all their attempts.
 
 - **Total Score:**  
-  The sum of all scores from all attempts made by the player. 
+  The sum of all scores from all attempts made by the player.
 
 - **Count:**  
   The total number of attempts the player has made.
@@ -100,12 +103,12 @@ Below are the explanations for each metric:
   `Absolute Efficiency = Total Score / (Highest Score × 14)`  
 
 - **Relative Efficiency:**  
-  A measure of how close the player's total score is to their theoretical maximum, based only on the number of attempts they actually made. It shows how efficiently a player performed in the attempts they actually made, regardless of how many times they played.   
+  A measure of how close the player's total score is to their theoretical maximum, based only on the number of attempts they actually made. It shows how efficiently a player performed in the attempts they actually made, regardless of how many times they played.
   _Formula:_  
   `Relative Efficiency = Total Score / (Highest Score × Attempt Count)`  
 
 - **Peak-Average Gap:**  
-  The difference between the player's highest score and their average score. It shows the consistency of the player. A smaller gap means the player performs close to their best most of the time, while a larger gap suggests occasional high peaks but lower average performance.   
+  The difference between the player's highest score and their average score. It shows the consistency of the player. A smaller gap means the player performs close to their best most of the time, while a larger gap suggests occasional high peaks but lower average performance.
   _Formula:_  
   `Peak-Average Gap = Highest Score - (Total Score / Count)`
 
@@ -115,7 +118,8 @@ Below are the explanations for each metric:
 
 - `POST /add_attempt`  
   Add a new attempt.  
-  **Body:**  
+  **Body:**
+
   ```json
   {
     "player_name": "KaonWry",
@@ -143,13 +147,10 @@ Below are the explanations for each metric:
 - `GET /export_csv?table=log`  
   Export all individual attempts as a CSV file.
 
+- `POST /reset_db`  
+  Drops and recreates the attempts table, resetting the database.
+
+- `POST /import_csv`  
+  Import attempts from CSV file (with columns: `player_name`, `score`, `doll1`, `doll2`, `doll3`, `doll4`, `doll5`, and `date`) and add the data into the database.
+
 ---
-
-## Resetting the Database
-
-To clear all attempts and reset the ID counter:
-
-```sh
-python db_clear.py
-```
-

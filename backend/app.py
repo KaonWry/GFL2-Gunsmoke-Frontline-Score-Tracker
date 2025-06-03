@@ -175,5 +175,74 @@ def export_csv():
         headers={"Content-disposition": f"attachment; filename={filename}"}
     )
 
+@app.route('/reset_db', methods=['POST'])
+def reset_db():
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(backend_dir, "raid_data.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DROP TABLE IF EXISTS attempts")
+        cursor.execute("""
+            CREATE TABLE attempts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                player_name TEXT NOT NULL,
+                score INTEGER NOT NULL,
+                doll1 TEXT,
+                doll2 TEXT,
+                doll3 TEXT,
+                doll4 TEXT,
+                doll5 TEXT,
+                date TEXT DEFAULT (DATE('now'))
+            )
+        """)
+        conn.commit()
+        return jsonify({"message": "Database reset successful."}), 200
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": f"Database reset failed: {str(e)}"}), 500
+    finally:
+        conn.close()
+
+@app.route('/import_csv', methods=['POST'])
+def import_csv():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    try:
+        df = pd.read_csv(file)
+        required_columns = {'player_name', 'score', 'doll1', 'doll2', 'doll3', 'doll4', 'doll5'}
+        if not required_columns.issubset(df.columns):
+            return jsonify({'error': f'CSV must contain columns: {required_columns}'}), 400
+
+        backend_dir = os.path.dirname(os.path.abspath(__file__))
+        db_path = os.path.join(backend_dir, "raid_data.db")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        imported = 0
+        for _, row in df.iterrows():
+            cursor.execute("""
+                INSERT INTO attempts (player_name, score, doll1, doll2, doll3, doll4, doll5, date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                row['player_name'],
+                int(row['score']),
+                row.get('doll1', None),
+                row.get('doll2', None),
+                row.get('doll3', None),
+                row.get('doll4', None),
+                row.get('doll5', None),
+                row.get('date', None) if 'date' in df.columns else None
+            ))
+            imported += 1
+        conn.commit()
+        conn.close()
+        return jsonify({'message': f'Imported {imported} attempts from CSV.'})
+    except Exception as e:
+        return jsonify({'error': f'Failed to import CSV: {str(e)}'}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
