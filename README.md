@@ -1,7 +1,7 @@
 # Gunsmoke Frontline Score Tracker for Girls Frontline 2: Exillium
 
 A simple web app for tracking and reviewing player attempts and scores for your platoon in Gunsmoke Frontline.  
-Built with Flask (Python) for the backend and a Next.js (React) frontend.
+Built with Flask for the backend and Next.js frontend.
 
 ---
 
