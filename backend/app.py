@@ -97,12 +97,13 @@ def recap_players():
     conn.close()
     if df.empty:
         return jsonify([])
-    max_attempts = 14
+    max_attempts = 2*7 # 7 days long event, 2 attempts a day
     recap_df = df.groupby('player_name').agg(
         highest_score=pd.NamedAgg(column='score', aggfunc='max'),
         total_score=pd.NamedAgg(column='score', aggfunc='sum'),
         attempts=pd.NamedAgg(column='score', aggfunc='count')
     ).reset_index().sort_values('total_score', ascending=False)
+    recap_df['participation_rate'] = recap_df['attempts'] / max_attempts
     recap_df['relative_efficiency'] = recap_df.apply(
         lambda row: row['total_score'] / (row['highest_score'] * row['attempts'])
         if row['highest_score'] > 0 and row['attempts'] > 0 else 0,
@@ -142,12 +143,13 @@ def export_csv():
         if df.empty:
             csv_data = ""
         else:
-            max_attempts = 14
+            max_attempts = 7*2 # 7 day event, 2 attempts per day
             recap_df = df.groupby('player_name').agg(
                 highest_score=pd.NamedAgg(column='score', aggfunc='max'),
                 total_score=pd.NamedAgg(column='score', aggfunc='sum'),
                 attempts=pd.NamedAgg(column='score', aggfunc='count')
             ).reset_index().sort_values('total_score', ascending=False)
+            recap_df['participation_rate'] = recap_df['attempts'] / max_attempts
             recap_df['relative_efficiency'] = recap_df.apply(
                 lambda row: row['total_score'] / (row['highest_score'] * row['attempts'])
                 if row['highest_score'] > 0 and row['attempts'] > 0 else 0,
@@ -162,9 +164,11 @@ def export_csv():
             # Format as percent for efficiency columns
             recap_df['relative_efficiency'] = recap_df['relative_efficiency'] * 100
             recap_df['absolute_efficiency'] = recap_df['absolute_efficiency'] * 100
+            recap_df['participation_rate'] = recap_df['participation_rate'] * 100
             # Round for display
             recap_df['relative_efficiency'] = recap_df['relative_efficiency'].round(2)
             recap_df['absolute_efficiency'] = recap_df['absolute_efficiency'].round(2)
+            recap_df['participation_rate'] = recap_df['participation_rate'].round(2)
             recap_df['peak_average_gap'] = recap_df['peak_average_gap'].round(2)
             csv_data = recap_df.to_csv(index=False)
         filename = "player_recap.csv"

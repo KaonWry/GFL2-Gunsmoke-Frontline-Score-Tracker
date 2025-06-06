@@ -97,6 +97,11 @@ Below are the explanations for each metric:
 - **Count:**  
   The total number of attempts the player has made.
 
+- **Participation Rate:**  
+  The percentage of  attempts that a player actually participated in during the event.  
+  _Formula:_  
+  `Participation Rate = Attempt Count / 14`
+
 - **Absolute Efficiency:**  
   A measure of how close the player's total score is to their theoretical maximum, assuming they played every possible attempt (7 days, twice a day). A lower value means the player either missed attempts or didn't perform close to their best in each attempt.  
   _Formula:_  

@@ -21,10 +21,10 @@
   @apply flex bg-gray-100 rounded-t-lg overflow-x-auto;
 }
 .gfl-list-header-item {
-  @apply flex-1 px-4 py-2 font-semibold text-gray-700 text-left transition-colors bg-transparent border-none cursor-pointer;
+  @apply flex-1 px-4 py-2 font-semibold text-gray-700 text-left transition-colors bg-transparent border-none;
 }
 .gfl-list-header-item-clickable {
-  @apply hover:bg-gray-200;
+  @apply hover:text-blue-500 cursor-pointer;
 }
 .gfl-list {
   @apply flex flex-col;

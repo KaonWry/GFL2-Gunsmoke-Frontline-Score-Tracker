@@ -7,6 +7,7 @@ const columns = [
   { key: "highest_score", label: "Highest Score" },
   { key: "total_score", label: "Total Score" },
   { key: "attempts", label: "Count" },
+  { key: "participation_rate", label: "Participation Rate" },
   { key: "absolute_efficiency", label: "Absolute Efficiency" },
   { key: "relative_efficiency", label: "Relative Efficiency" },
   { key: "peak_average_gap", label: "Peak-Average Gap" },
@@ -94,6 +95,11 @@ export default function RecapPage() {
                 <div className="gfl-list-cell">{player.highest_score}</div>
                 <div className="gfl-list-cell">{player.total_score}</div>
                 <div className="gfl-list-cell">{player.attempts}</div>
+                <div className="gfl-list-cell">
+                  {typeof player.participation_rate === "number"
+                    ? (player.participation_rate * 100).toFixed(2) + "%"
+                    : ""}
+                </div>
                 <div className="gfl-list-cell">
                   {typeof player.absolute_efficiency === "number"
                     ? (player.absolute_efficiency * 100).toFixed(2) + "%"
