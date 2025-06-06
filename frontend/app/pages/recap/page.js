@@ -33,7 +33,7 @@ export default function RecapPage() {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortKey(key);
-      setSortOrder("asc");
+      setSortOrder(key === "player_name" ? "asc" : "desc");
     }
   };
 

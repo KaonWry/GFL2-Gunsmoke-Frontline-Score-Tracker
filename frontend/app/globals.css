@@ -10,6 +10,7 @@
 .gfl-header {
   @apply text-4xl font-bold mb-6 text-center;
 }
+
 /* List Styles */
 .gfl-list-container {
   width: 100vw;
@@ -24,7 +25,7 @@
   @apply flex-1 px-4 py-2 font-semibold text-gray-700 text-left transition-colors bg-transparent border-none;
 }
 .gfl-list-header-item-clickable {
-  @apply hover:text-blue-500 cursor-pointer;
+  @apply hover:text-blue-900 hover:bg-gray-300 cursor-pointer;
 }
 .gfl-list {
   @apply flex flex-col;
