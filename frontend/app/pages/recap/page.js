@@ -66,13 +66,13 @@ export default function RecapPage() {
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6 text-center">Player Recap</h1>
       <div className="overflow-x-auto w-full max-w-3xl flex justify-center">
-        <table className="table-auto mx-auto border border-gray-200 bg-transparent text-center border-separate border-spacing-0">
+        <table className="gfl-table">
           <thead>
             <tr className="bg-gray-100">
               {columns.map((col, idx) => (
                 <th
                   key={col.key}
-                  className={`px-6 py-3 border-b border-r border-gray-200 text-center cursor-pointer select-none`}
+                  className="gfl-th"
                   onClick={() => handleSort(col.key)}
                   style={idx === columns.length - 1 ? { borderRight: 0 } : {}}
                 >
@@ -86,31 +86,23 @@ export default function RecapPage() {
             {sortedRecap.map((player, idx) => (
               <tr
                 key={player.player_name}
-                className={idx % 2 === 0 ? "bg-white" : "bg-gray-100"}
+                className={idx % 2 === 0 ? "gfl-tr-even" : "gfl-tr-odd"}
               >
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {player.player_name}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {player.highest_score}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {player.total_score}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {player.attempts}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
+                <td className="gfl-td">{player.player_name}</td>
+                <td className="gfl-td">{player.highest_score}</td>
+                <td className="gfl-td">{player.total_score}</td>
+                <td className="gfl-td">{player.attempts}</td>
+                <td className="gfl-td">
                   {typeof player.absolute_efficiency === "number"
                     ? (player.absolute_efficiency * 100).toFixed(2) + "%"
                     : ""}
                 </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
+                <td className="gfl-td">
                   {typeof player.relative_efficiency === "number"
                     ? (player.relative_efficiency * 100).toFixed(2) + "%"
                     : ""}
                 </td>
-                <td className="px-2 py-1 border-b border-gray-200 text-center">
+                <td className="gfl-td gfl-td-last">
                   {typeof player.peak_average_gap === "number"
                     ? player.peak_average_gap.toFixed(2)
                     : ""}
@@ -132,7 +124,7 @@ export default function RecapPage() {
       </div>
       <button
         onClick={handleExportCSV}
-        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+        className="mt-4 gfl-btn gfl-btn-blue"
       >
         Export to CSV
       </button>

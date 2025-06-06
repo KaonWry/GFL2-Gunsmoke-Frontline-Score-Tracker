@@ -93,72 +93,38 @@ export default function LogPage() {
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6 text-center">Attempts Log</h1>
       <div className="overflow-x-auto w-full max-w-5xl flex justify-center">
-        <table className="table-auto mx-auto border border-gray-200 bg-transparent text-center border-separate border-spacing-0">
+        <table className="gfl-table">
           <thead>
             <tr className="bg-gray-100">
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Player Name
-              </th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Score
-              </th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Doll 1
-              </th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Doll 2
-              </th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Doll 3
-              </th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Doll 4
-              </th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Doll 5
-              </th>
-              <th className="px-6 py-3 border-b border-r border-gray-200 text-center">
-                Date
-              </th>
-              <th className="px-6 py-3 border-b border-gray-200 text-center">
-                Action
-              </th>
+              <th className="gfl-th">Player Name</th>
+              <th className="gfl-th">Score</th>
+              <th className="gfl-th">Doll 1</th>
+              <th className="gfl-th">Doll 2</th>
+              <th className="gfl-th">Doll 3</th>
+              <th className="gfl-th">Doll 4</th>
+              <th className="gfl-th">Doll 5</th>
+              <th className="gfl-th">Date</th>
+              <th className="gfl-th">Action</th>
             </tr>
           </thead>
           <tbody>
             {attempts.map((a, idx) => (
               <tr
                 key={a.id}
-                className={idx % 2 === 0 ? "bg-white" : "bg-gray-100"}
+                className={idx % 2 === 0 ? "gfl-tr-even" : "gfl-tr-odd"}
               >
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.player_name}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.score}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.doll1}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.doll2}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.doll3}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.doll4}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.doll5}
-                </td>
-                <td className="px-2 py-1 border-b border-r border-gray-200 text-center">
-                  {a.date}
-                </td>
-                <td className="px-2 py-1 border-b border-gray-200 text-center">
+                <td className="gfl-td">{a.player_name}</td>
+                <td className="gfl-td">{a.score}</td>
+                <td className="gfl-td">{a.doll1}</td>
+                <td className="gfl-td">{a.doll2}</td>
+                <td className="gfl-td">{a.doll3}</td>
+                <td className="gfl-td">{a.doll4}</td>
+                <td className="gfl-td">{a.doll5}</td>
+                <td className="gfl-td">{a.date}</td>
+                <td className="gfl-td gfl-td-last">
                   <button
                     onClick={() => handleDeleteClick(a.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors"
+                    className="gfl-btn gfl-btn-red"
                   >
                     Delete
                   </button>
@@ -178,13 +144,13 @@ export default function LogPage() {
       <div className="flex gap-4 mt-4">
         <button
           onClick={handleImportCSV}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+          className="gfl-btn gfl-btn-green"
         >
           Import CSV
         </button>
         <button
           onClick={handleExportCSV}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          className="gfl-btn gfl-btn-blue"
         >
           Export to CSV
         </button>
@@ -197,7 +163,7 @@ export default function LogPage() {
         />
         <button
           onClick={handleResetDB}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+          className="gfl-btn gfl-btn-red"
         >
           Reset Database
         </button>
@@ -209,21 +175,21 @@ export default function LogPage() {
         <div className="mt-2 text-center text-sm text-gray-700">{resetStatus}</div>
       )}
       {confirmId !== null && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
+        <div className="gfl-modal-bg">
+          <div className="gfl-modal">
             <div className="mb-4 text-gray-800">
               Are you sure you want to delete this attempt?
             </div>
             <div className="flex justify-center gap-4">
               <button
                 onClick={confirmDelete}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                className="gfl-btn gfl-btn-red"
               >
                 Delete
               </button>
               <button
                 onClick={cancelDelete}
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+                className="gfl-btn gfl-btn-gray"
               >
                 Cancel
               </button>
@@ -232,8 +198,8 @@ export default function LogPage() {
         </div>
       )}
       {showResetModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
+        <div className="gfl-modal-bg">
+          <div className="gfl-modal">
             <div className="mb-4 text-gray-800">
               Are you sure you want to <span className="font-bold text-red-600">reset the database</span>?<br />
               <span className="text-sm text-gray-600">This will delete all data.</span>
@@ -241,13 +207,13 @@ export default function LogPage() {
             <div className="flex justify-center gap-4">
               <button
                 onClick={confirmResetDB}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                className="gfl-btn gfl-btn-red"
               >
                 Reset
               </button>
               <button
                 onClick={cancelResetDB}
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+                className="gfl-btn gfl-btn-gray"
               >
                 Cancel
               </button>
