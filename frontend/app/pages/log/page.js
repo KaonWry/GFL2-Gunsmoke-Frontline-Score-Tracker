@@ -2,6 +2,18 @@
 import { useEffect, useState, useRef } from "react";
 import { API_BASE_URL } from "@/app/apiConfig";
 
+const columns = [
+  { key: "player_name", label: "Player Name" },
+  { key: "score", label: "Score" },
+  { key: "doll1", label: "Doll 1" },
+  { key: "doll2", label: "Doll 2" },
+  { key: "doll3", label: "Doll 3" },
+  { key: "doll4", label: "Doll 4" },
+  { key: "doll5", label: "Doll 5" },
+  { key: "date", label: "Date" },
+  { key: "action", label: "Action" },
+];
+
 export default function LogPage() {
   const [attempts, setAttempts] = useState([]);
   const [confirmId, setConfirmId] = useState(null);
@@ -91,55 +103,50 @@ export default function LogPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-6 text-center">Attempts Log</h1>
-      <div className="overflow-x-auto w-full max-w-5xl flex justify-center">
-        <table className="gfl-table">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="gfl-th">Player Name</th>
-              <th className="gfl-th">Score</th>
-              <th className="gfl-th">Doll 1</th>
-              <th className="gfl-th">Doll 2</th>
-              <th className="gfl-th">Doll 3</th>
-              <th className="gfl-th">Doll 4</th>
-              <th className="gfl-th">Doll 5</th>
-              <th className="gfl-th">Date</th>
-              <th className="gfl-th">Action</th>
-            </tr>
-          </thead>
-          <tbody>
+      <h1 className="gfl-header">Attempts Log</h1>
+      <div className="gfl-list-container w-full">
+        <div className="gfl-list-header">
+          {columns.map((col) => (
+            <div
+              key={col.key}
+              className="gfl-list-header-item"
+              style={col.key === "action" ? { textAlign: "center" } : {}}
+            >
+              {col.label}
+            </div>
+          ))}
+        </div>
+        {attempts.length === 0 ? (
+          <div className="text-center py-4 text-gray-500">
+            No attempts found.
+          </div>
+        ) : (
+          <div className="gfl-list">
             {attempts.map((a, idx) => (
-              <tr
+              <div
                 key={a.id}
-                className={idx % 2 === 0 ? "gfl-tr-even" : "gfl-tr-odd"}
+                className={`gfl-list-row ${idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"}`}
               >
-                <td className="gfl-td">{a.player_name}</td>
-                <td className="gfl-td">{a.score}</td>
-                <td className="gfl-td">{a.doll1}</td>
-                <td className="gfl-td">{a.doll2}</td>
-                <td className="gfl-td">{a.doll3}</td>
-                <td className="gfl-td">{a.doll4}</td>
-                <td className="gfl-td">{a.doll5}</td>
-                <td className="gfl-td">{a.date}</td>
-                <td className="gfl-td gfl-td-last">
+                <div className="gfl-list-cell">{a.player_name}</div>
+                <div className="gfl-list-cell">{a.score}</div>
+                <div className="gfl-list-cell">{a.doll1}</div>
+                <div className="gfl-list-cell">{a.doll2}</div>
+                <div className="gfl-list-cell">{a.doll3}</div>
+                <div className="gfl-list-cell">{a.doll4}</div>
+                <div className="gfl-list-cell">{a.doll5}</div>
+                <div className="gfl-list-cell">{a.date}</div>
+                <div className="gfl-list-cell flex justify-center">
                   <button
                     onClick={() => handleDeleteClick(a.id)}
                     className="gfl-btn gfl-btn-red"
                   >
                     Delete
                   </button>
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-            {attempts.length === 0 && (
-              <tr>
-                <td colSpan={9} className="text-center py-4 text-gray-500">
-                  No attempts found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+          </div>
+        )}
       </div>
       <div className="flex gap-4 mt-4">
         <button

@@ -64,63 +64,55 @@ export default function RecapPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-6 text-center">Player Recap</h1>
-      <div className="overflow-x-auto w-full max-w-3xl flex justify-center">
-        <table className="gfl-table">
-          <thead>
-            <tr className="bg-gray-100">
-              {columns.map((col, idx) => (
-                <th
-                  key={col.key}
-                  className="gfl-th"
-                  onClick={() => handleSort(col.key)}
-                  style={idx === columns.length - 1 ? { borderRight: 0 } : {}}
-                >
-                  {col.label}
-                  <span className="ml-1">{sortArrow(col.key)}</span>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
+      <h1 className="gfl-header">Player Recap</h1>
+      <div className="gfl-list-container w-full">
+        <div className="gfl-list-header">
+          {columns.map((col) => (
+            <button
+              key={col.key}
+              className="gfl-list-header-item gfl-list-header-item-clickable"
+              onClick={() => handleSort(col.key)}
+              type="button"
+            >
+              {col.label}
+              <span className="ml-1">{sortArrow(col.key)}</span>
+            </button>
+          ))}
+        </div>
+        {sortedRecap.length === 0 ? (
+          <div className="text-center py-4 text-gray-500">
+            No player data found.
+          </div>
+        ) : (
+          <div className="gfl-list">
             {sortedRecap.map((player, idx) => (
-              <tr
+              <div
                 key={player.player_name}
-                className={idx % 2 === 0 ? "gfl-tr-even" : "gfl-tr-odd"}
+                className={`gfl-list-row ${idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"}`}
               >
-                <td className="gfl-td">{player.player_name}</td>
-                <td className="gfl-td">{player.highest_score}</td>
-                <td className="gfl-td">{player.total_score}</td>
-                <td className="gfl-td">{player.attempts}</td>
-                <td className="gfl-td">
+                <div className="gfl-list-cell">{player.player_name}</div>
+                <div className="gfl-list-cell">{player.highest_score}</div>
+                <div className="gfl-list-cell">{player.total_score}</div>
+                <div className="gfl-list-cell">{player.attempts}</div>
+                <div className="gfl-list-cell">
                   {typeof player.absolute_efficiency === "number"
                     ? (player.absolute_efficiency * 100).toFixed(2) + "%"
                     : ""}
-                </td>
-                <td className="gfl-td">
+                </div>
+                <div className="gfl-list-cell">
                   {typeof player.relative_efficiency === "number"
                     ? (player.relative_efficiency * 100).toFixed(2) + "%"
                     : ""}
-                </td>
-                <td className="gfl-td gfl-td-last">
+                </div>
+                <div className="gfl-list-cell">
                   {typeof player.peak_average_gap === "number"
                     ? player.peak_average_gap.toFixed(2)
                     : ""}
-                </td>
-              </tr>
+                </div>
+              </div>
             ))}
-            {recap.length === 0 && (
-              <tr>
-                <td
-                  colSpan={columns.length}
-                  className="text-center py-4 text-gray-500"
-                >
-                  No player data found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+          </div>
+        )}
       </div>
       <button
         onClick={handleExportCSV}
