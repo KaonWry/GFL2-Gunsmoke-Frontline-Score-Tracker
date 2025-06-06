@@ -85,17 +85,17 @@ export default function CountdownPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-      <h1 className="text-4xl font-bold mb-6">{session.label}</h1>
+    <div className="gfl-page-center">
+      <h1 className="gfl-countdown-title">{session.label}</h1>
       {session.phase === "in_session" && (
-        <div className="text-4xl font-mono">
+        <div className="gfl-countdown-timer">
           {session.resetCountdown === null
             ? "Loading..."
             : `${formatTime(session.resetCountdown)} until server reset`}
         </div>
       )}
       {session.phase === "to_next" && (
-        <div className="text-4xl font-mono">
+        <div className="gfl-countdown-timer">
           {session.nextCountdown !== undefined && session.nextCountdown !== null
             ? `${formatTime(session.nextCountdown)}`
             : "Loading..."}
