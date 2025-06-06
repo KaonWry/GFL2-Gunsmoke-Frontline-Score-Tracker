@@ -18,6 +18,7 @@ export default function RecapPage() {
   const [recap, setRecap] = useState([]);
   const [sortKey, setSortKey] = useState("player_name");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
 
   const fetchRecap = async () => {
     const res = await fetch(`${API_BASE_URL}/recap_players`);
@@ -64,6 +65,17 @@ export default function RecapPage() {
     return sortOrder === "asc" ? " ▲" : " ▼";
   };
 
+  // Helper to format values as in the list
+  const formatMetric = (key, value) => {
+    if (key === "participation_rate" || key === "absolute_efficiency" || key === "relative_efficiency") {
+      return typeof value === "number" ? (value * 100).toFixed(2) + "%" : "";
+    }
+    if (key === "peak_average_gap") {
+      return typeof value === "number" ? value.toFixed(2) : "";
+    }
+    return value;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
       <h1 className="gfl-header">Player Recap</h1>
@@ -72,7 +84,7 @@ export default function RecapPage() {
           {columns.map((col) => (
             <button
               key={col.key}
-              className="gfl-list-header-item gfl-list-header-item-clickable"
+              className="gfl-list-header-item gfl-list-clickable"
               onClick={() => handleSort(col.key)}
               type="button"
             >
@@ -90,7 +102,12 @@ export default function RecapPage() {
             {sortedRecap.map((player, idx) => (
               <div
                 key={player.player_name}
-                className={`gfl-list-row ${idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"}`}
+                className={`gfl-list-clickable gfl-list-row ${idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"}`}
+                onClick={() => setSelectedPlayer(player)}
+                style={{ cursor: "pointer" }}
+                tabIndex={0}
+                role="button"
+                aria-label={`Show details for ${player.player_name}`}
               >
                 <div className="gfl-list-cell">{player.player_name}</div>
                 <div className="gfl-list-cell">{player.highest_score}</div>
@@ -128,6 +145,43 @@ export default function RecapPage() {
       >
         Export to CSV
       </button>
+
+      {/* Modal for player details */}
+      {selectedPlayer && (
+        <div className="gfl-modal-bg" onClick={() => setSelectedPlayer(null)}>
+          <div
+            className="gfl-modal"
+            onClick={e => e.stopPropagation()}
+            tabIndex={-1}
+          >
+            <h2 className="text-xl font-bold mb-4">{selectedPlayer.player_name}</h2>
+            <div className="text-left space-y-2 mb-4">
+              <div className="flex justify-between">
+                <span className="font-semibold">Highest Score:</span>
+                <span>{selectedPlayer.highest_score}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-semibold">Total Score:</span>
+                <span>{selectedPlayer.total_score}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-semibold">Most Used Doll:</span>
+                <span>{selectedPlayer.most_used_doll}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-semibold">Count:</span>
+                <span>{selectedPlayer.attempts}</span>
+              </div>
+            </div>
+            <button
+              className="gfl-btn gfl-btn-blue"
+              onClick={() => setSelectedPlayer(null)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

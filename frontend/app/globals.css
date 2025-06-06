@@ -19,12 +19,12 @@
   margin-right: 10px;
 }
 .gfl-list-header {
-  @apply flex bg-gray-100 rounded-t-lg overflow-x-auto;
+  @apply flex bg-gray-200 rounded-t-lg overflow-x-auto;
 }
 .gfl-list-header-item {
   @apply flex-1 px-4 py-2 font-semibold text-gray-700 text-left transition-colors bg-transparent border-none;
 }
-.gfl-list-header-item-clickable {
+.gfl-list-clickable {
   @apply hover:text-blue-900 hover:bg-gray-300 cursor-pointer;
 }
 .gfl-list {
