@@ -94,6 +94,9 @@ Below are the explanations for each metric:
 - **Total Score:**  
   The sum of all scores from all attempts made by the player.
 
+- **Most Used Doll**  
+  Showing most used doll by a player and how many time does the player use said doll
+
 - **Count:**  
   The total number of attempts the player has made.
 

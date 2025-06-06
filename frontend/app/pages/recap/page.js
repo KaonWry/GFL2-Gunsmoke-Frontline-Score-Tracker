@@ -6,6 +6,7 @@ const columns = [
   { key: "player_name", label: "Player Name" },
   { key: "highest_score", label: "Highest Score" },
   { key: "total_score", label: "Total Score" },
+  { key: "most_used_doll", label: "Most Used Doll" },
   { key: "attempts", label: "Count" },
   { key: "participation_rate", label: "Participation Rate" },
   { key: "absolute_efficiency", label: "Absolute Efficiency" },
@@ -94,6 +95,7 @@ export default function RecapPage() {
                 <div className="gfl-list-cell">{player.player_name}</div>
                 <div className="gfl-list-cell">{player.highest_score}</div>
                 <div className="gfl-list-cell">{player.total_score}</div>
+                <div className="gfl-list-cell">{player.most_used_doll}</div>
                 <div className="gfl-list-cell">{player.attempts}</div>
                 <div className="gfl-list-cell">
                   {typeof player.participation_rate === "number"

@@ -93,11 +93,26 @@ def recap_players():
     backend_dir = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(backend_dir, "raid_data.db")
     conn = sqlite3.connect(db_path)
-    df = pd.read_sql_query("SELECT player_name, score FROM attempts", conn)
+    df = pd.read_sql_query("SELECT player_name, score, doll1, doll2, doll3, doll4, doll5 FROM attempts", conn)
     conn.close()
     if df.empty:
         return jsonify([])
     max_attempts = 2*7 # 7 days long event, 2 attempts a day
+
+    # Prepare most used doll calculation
+    doll_cols = ['doll1', 'doll2', 'doll3', 'doll4', 'doll5']
+    most_used_dolls = []
+    for player, group in df.groupby('player_name'):
+        dolls = group[doll_cols].values.flatten()
+        dolls = [d for d in dolls if pd.notna(d) and d]
+        if dolls:
+            from collections import Counter
+            counter = Counter(dolls)
+            most_common = counter.most_common(1)[0]
+            most_used_dolls.append((player, f"{most_common[0]} ({most_common[1]})"))
+        else:
+            most_used_dolls.append((player, ""))
+
     recap_df = df.groupby('player_name').agg(
         highest_score=pd.NamedAgg(column='score', aggfunc='max'),
         total_score=pd.NamedAgg(column='score', aggfunc='sum'),
@@ -115,7 +130,15 @@ def recap_players():
         axis=1
     )
     recap_df['peak_average_gap'] = recap_df['highest_score'] - (recap_df['total_score'] / recap_df['attempts'])
-    recap = recap_df.to_dict(orient='records')
+    # Add most_used_doll column
+    most_used_dict = dict(most_used_dolls)
+    recap_df['most_used_doll'] = recap_df['player_name'].map(most_used_dict)
+    # Reorder columns
+    cols = [
+        'player_name', 'highest_score', 'total_score', 'most_used_doll', 'attempts',
+        'participation_rate', 'absolute_efficiency', 'relative_efficiency', 'peak_average_gap'
+    ]
+    recap = recap_df[cols].to_dict(orient='records')
     return jsonify(recap)
 
 @app.route('/export_csv', methods=['GET'])
@@ -138,12 +161,24 @@ def export_csv():
     else:
         # Export recap table (same as /recap_players but as CSV)
         conn = sqlite3.connect(db_path)
-        df = pd.read_sql_query("SELECT player_name, score FROM attempts", conn)
+        df = pd.read_sql_query("SELECT player_name, score, doll1, doll2, doll3, doll4, doll5 FROM attempts", conn)
         conn.close()
         if df.empty:
             csv_data = ""
         else:
             max_attempts = 7*2 # 7 day event, 2 attempts per day
+            doll_cols = ['doll1', 'doll2', 'doll3', 'doll4', 'doll5']
+            most_used_dolls = []
+            for player, group in df.groupby('player_name'):
+                dolls = group[doll_cols].values.flatten()
+                dolls = [d for d in dolls if pd.notna(d) and d]
+                if dolls:
+                    from collections import Counter
+                    counter = Counter(dolls)
+                    most_common = counter.most_common(1)[0]
+                    most_used_dolls.append((player, f"{most_common[0]} ({most_common[1]})"))
+                else:
+                    most_used_dolls.append((player, ""))
             recap_df = df.groupby('player_name').agg(
                 highest_score=pd.NamedAgg(column='score', aggfunc='max'),
                 total_score=pd.NamedAgg(column='score', aggfunc='sum'),
@@ -161,6 +196,8 @@ def export_csv():
                 axis=1
             )
             recap_df['peak_average_gap'] = recap_df['highest_score'] - (recap_df['total_score'] / recap_df['attempts'])
+            most_used_dict = dict(most_used_dolls)
+            recap_df['most_used_doll'] = recap_df['player_name'].map(most_used_dict)
             # Format as percent for efficiency columns
             recap_df['relative_efficiency'] = recap_df['relative_efficiency'] * 100
             recap_df['absolute_efficiency'] = recap_df['absolute_efficiency'] * 100
@@ -170,7 +207,12 @@ def export_csv():
             recap_df['absolute_efficiency'] = recap_df['absolute_efficiency'].round(2)
             recap_df['participation_rate'] = recap_df['participation_rate'].round(2)
             recap_df['peak_average_gap'] = recap_df['peak_average_gap'].round(2)
-            csv_data = recap_df.to_csv(index=False)
+            # Reorder columns
+            cols = [
+                'player_name', 'highest_score', 'total_score', 'most_used_doll', 'attempts',
+                'participation_rate', 'absolute_efficiency', 'relative_efficiency', 'peak_average_gap'
+            ]
+            csv_data = recap_df[cols].to_csv(index=False)
         filename = "player_recap.csv"
 
     return Response(
