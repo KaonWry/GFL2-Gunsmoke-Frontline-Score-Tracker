@@ -70,6 +70,10 @@
 .gfl-modal-btn {
   @apply bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors;
 }
+.gfl-modal-wide {
+  max-width: 700px;
+  width: 95vw;
+}
 
 /* Navbar Styles */
 .gfl-navbar {
