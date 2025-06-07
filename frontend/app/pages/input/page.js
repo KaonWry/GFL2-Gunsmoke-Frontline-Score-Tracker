@@ -96,10 +96,7 @@ export default function InputPage() {
         <div className="gfl-modal-bg">
           <div className="gfl-modal">
             <div className="mb-4 text-gray-800">{result}</div>
-            <button
-              onClick={() => setResult("")}
-              className="gfl-modal-btn"
-            >
+            <button onClick={() => setResult("")} className="gfl-modal-btn">
               OK
             </button>
           </div>

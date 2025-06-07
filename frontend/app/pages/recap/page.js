@@ -24,13 +24,14 @@ const columns = [
   { key: "peak_average_gap", label: "Peak-Average Gap" },
 ];
 
+const maxAttempts = 2 * 7; // 7 days long event, 2 attempts per day
+
 function CustomTooltip({ active, payload, label, selectedPlayer }) {
   if (active && payload && payload.length && selectedPlayer) {
-    // Map metric to real value from selectedPlayer
     const metricKeyMap = {
-      "Participation Rate": {
-        key: "participation_rate",
-        format: (v) => ((v ?? 0) * 100).toFixed(2) + "%",
+      Participation: {
+        key: "attempts",
+        format: (v) => v ?? 0,
       },
       "Absolute Efficiency": {
         key: "absolute_efficiency",
@@ -50,19 +51,18 @@ function CustomTooltip({ active, payload, label, selectedPlayer }) {
       },
       "Peak-Average Gap": {
         key: "peak_average_gap",
-        format: (v) =>
-          typeof v === "number" ? v.toFixed(2) : "",
+        format: (v) => (typeof v === "number" ? v.toFixed(2) : ""),
       },
     };
     const metric = payload[0].payload.metric;
     const map = metricKeyMap[metric];
-    const realValue = map ? map.format(selectedPlayer[map.key]) : payload[0].value;
+    const realValue = map
+      ? map.format(selectedPlayer[map.key])
+      : payload[0].value;
     return (
       <div className="bg-white p-2 rounded shadow text-xs border border-gray-200">
         <div className="font-semibold">{metric}</div>
-        <div>
-          {realValue}
-        </div>
+        <div>{realValue}</div>
       </div>
     );
   }
@@ -71,7 +71,7 @@ function CustomTooltip({ active, payload, label, selectedPlayer }) {
 
 function TwoLineTick({ payload, x, y, textAnchor, ...rest }) {
   // Move the label further out from the center
-  // Center of chart is at (cx, cy) = (150, 120) for default ResponsiveContainer 300x240
+  // Center of chart is at (cx, cy) = (150,120) for default ResponsiveContainer 300x240
   // But we can get cx/cy from props if needed, or just calculate a vector from (150,120) to (x,y)
   // Let's use a scale factor to push the label further out
 
@@ -87,7 +87,7 @@ function TwoLineTick({ payload, x, y, textAnchor, ...rest }) {
   const words = payload.value.split(" ");
   if (words.length > 1) {
     return (
-      <text x={newX} y={newY} textAnchor={textAnchor} {...rest} fontSize={12}>
+      <text x={newX} y={newY} textAnchor={textAnchor} {...rest} fontSize={11}>
         <tspan x={newX} dy="0em">
           {words[0]}
         </tspan>
@@ -105,7 +105,6 @@ function TwoLineTick({ payload, x, y, textAnchor, ...rest }) {
 }
 
 function CustomLegend() {
-  // You can customize this as needed, or just return null for no legend
   return null;
 }
 
@@ -125,7 +124,9 @@ export default function RecapPage() {
     recap.length > 0
       ? Math.max(
           ...recap.map((p) =>
-            typeof p.peak_average_gap === "number" ? p.peak_average_gap : -Infinity
+            typeof p.peak_average_gap === "number"
+              ? p.peak_average_gap
+              : -Infinity
           )
         )
       : 1;
@@ -203,18 +204,22 @@ export default function RecapPage() {
     }
     return [
       {
-        metric: "Participation Rate",
-        value: player.participation_rate ? player.participation_rate * 100 : 0,
+        metric: "Participation",
+        value: maxAttempts ? (player.attempts / maxAttempts) * 100 : 0,
         fullMark: 100,
       },
       {
         metric: "Absolute Efficiency",
-        value: player.absolute_efficiency ? player.absolute_efficiency * 100 : 0,
+        value: player.absolute_efficiency
+          ? player.absolute_efficiency * 100
+          : 0,
         fullMark: 100,
       },
       {
         metric: "Relative Efficiency",
-        value: player.relative_efficiency ? player.relative_efficiency * 100 : 0,
+        value: player.relative_efficiency
+          ? player.relative_efficiency * 100
+          : 0,
         fullMark: 100,
       },
       {
@@ -300,10 +305,7 @@ export default function RecapPage() {
           </div>
         )}
       </div>
-      <button
-        onClick={handleExportCSV}
-        className="mt-4 gfl-btn gfl-btn-blue"
-      >
+      <button onClick={handleExportCSV} className="mt-4 gfl-btn gfl-btn-blue">
         Export to CSV
       </button>
 
@@ -315,9 +317,11 @@ export default function RecapPage() {
             onClick={(e) => e.stopPropagation()}
             tabIndex={-1}
           >
-            <h2 className="text-xl font-bold mb-4">{selectedPlayer.player_name}</h2>
+            <h2 className="text-xl font-bold mb-4">
+              {selectedPlayer.player_name}
+            </h2>
             <div className="flex flex-col md:flex-row gap-6 justify-between items-stretch">
-              {/* Left: Stats */}
+              {/* Left: Stats and Doll Usage Bar */}
               <div className="flex-1 text-left space-y-2 mb-4 md:mb-0 md:mr-4">
                 <div className="flex justify-between">
                   <span className="font-semibold">Highest Score:</span>
@@ -342,7 +346,7 @@ export default function RecapPage() {
                   className="w-full"
                   style={{ minWidth: 220, maxWidth: 320, height: 240 }}
                 >
-                  <ResponsiveContainer width="110%" height={240}>
+                  <ResponsiveContainer width="100%" height={240}>
                     <RadarChart
                       data={getRadarData(selectedPlayer)}
                       cx="50%"
@@ -350,7 +354,7 @@ export default function RecapPage() {
                       outerRadius={80}
                     >
                       <PolarGrid />
-                      <PolarAngleAxis dataKey="metric" tick={<TwoLineTick />}/>
+                      <PolarAngleAxis dataKey="metric" tick={<TwoLineTick />} />
                       <PolarRadiusAxis angle={30} domain={[0, 100]} />
                       <Radar
                         name={selectedPlayer.player_name}
@@ -359,7 +363,11 @@ export default function RecapPage() {
                         fill="#2563eb"
                         fillOpacity={0.5}
                       />
-                      <Tooltip content={<CustomTooltip selectedPlayer={selectedPlayer} />} />
+                      <Tooltip
+                        content={
+                          <CustomTooltip selectedPlayer={selectedPlayer} />
+                        }
+                      />
                       <Legend content={<CustomLegend />} />
                     </RadarChart>
                   </ResponsiveContainer>

@@ -125,7 +125,9 @@ export default function LogPage() {
             {attempts.map((a, idx) => (
               <div
                 key={a.id}
-                className={`gfl-list-row ${idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"}`}
+                className={`gfl-list-row ${
+                  idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"
+                }`}
               >
                 <div className="gfl-list-cell">{a.player_name}</div>
                 <div className="gfl-list-cell">{a.score}</div>
@@ -149,16 +151,10 @@ export default function LogPage() {
         )}
       </div>
       <div className="flex gap-4 mt-4">
-        <button
-          onClick={handleImportCSV}
-          className="gfl-btn gfl-btn-green"
-        >
+        <button onClick={handleImportCSV} className="gfl-btn gfl-btn-green">
           Import CSV
         </button>
-        <button
-          onClick={handleExportCSV}
-          className="gfl-btn gfl-btn-blue"
-        >
+        <button onClick={handleExportCSV} className="gfl-btn gfl-btn-blue">
           Export to CSV
         </button>
         <input
@@ -168,18 +164,19 @@ export default function LogPage() {
           onChange={onFileChange}
           style={{ display: "none" }}
         />
-        <button
-          onClick={handleResetDB}
-          className="gfl-btn gfl-btn-red"
-        >
+        <button onClick={handleResetDB} className="gfl-btn gfl-btn-red">
           Reset Database
         </button>
       </div>
       {importStatus && (
-        <div className="mt-2 text-center text-sm text-gray-700">{importStatus}</div>
+        <div className="mt-2 text-center text-sm text-gray-700">
+          {importStatus}
+        </div>
       )}
       {resetStatus && (
-        <div className="mt-2 text-center text-sm text-gray-700">{resetStatus}</div>
+        <div className="mt-2 text-center text-sm text-gray-700">
+          {resetStatus}
+        </div>
       )}
       {confirmId !== null && (
         <div className="gfl-modal-bg">
@@ -188,16 +185,10 @@ export default function LogPage() {
               Are you sure you want to delete this attempt?
             </div>
             <div className="flex justify-center gap-4">
-              <button
-                onClick={confirmDelete}
-                className="gfl-btn gfl-btn-red"
-              >
+              <button onClick={confirmDelete} className="gfl-btn gfl-btn-red">
                 Delete
               </button>
-              <button
-                onClick={cancelDelete}
-                className="gfl-btn gfl-btn-gray"
-              >
+              <button onClick={cancelDelete} className="gfl-btn gfl-btn-gray">
                 Cancel
               </button>
             </div>
@@ -208,20 +199,18 @@ export default function LogPage() {
         <div className="gfl-modal-bg">
           <div className="gfl-modal">
             <div className="mb-4 text-gray-800">
-              Are you sure you want to <span className="font-bold text-red-600">reset the database</span>?<br />
-              <span className="text-sm text-gray-600">This will delete all data.</span>
+              Are you sure you want to{" "}
+              <span className="font-bold text-red-600">reset the database</span>
+              ?<br />
+              <span className="text-sm text-gray-600">
+                This will delete all data.
+              </span>
             </div>
             <div className="flex justify-center gap-4">
-              <button
-                onClick={confirmResetDB}
-                className="gfl-btn gfl-btn-red"
-              >
+              <button onClick={confirmResetDB} className="gfl-btn gfl-btn-red">
                 Reset
               </button>
-              <button
-                onClick={cancelResetDB}
-                className="gfl-btn gfl-btn-gray"
-              >
+              <button onClick={cancelResetDB} className="gfl-btn gfl-btn-gray">
                 Cancel
               </button>
             </div>
