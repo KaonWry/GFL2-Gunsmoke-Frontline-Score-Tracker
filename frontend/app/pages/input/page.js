@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { API_BASE_URL } from "@/app/apiConfig";
+import Select from "react-select";
 
 export default function InputPage() {
   const [form, setForm] = useState({
@@ -39,6 +40,49 @@ export default function InputPage() {
         doll5: "",
       });
   };
+  const dollOptions = [
+    { value: "Andoris", label: "Andoris" },
+    { value: "Belka", label: "Belka" },
+    { value: "Centaureissi", label: "Centaureissi" },
+    { value: "Daiyan", label: "Daiyan" },
+    { value: "Dushevnaya", label: "Dushevnaya" },
+    { value: "Faye", label: "Faye" },
+    { value: "Florence", label: "Florence" },
+    { value: "Jiangyu", label: "Jiangyu" },
+    { value: "Klukai", label: "Klukai" },
+    { value: "Lainie", label: "Lainie" },
+    { value: "Lenna", label: "Lenna" },
+    { value: "Leva", label: "Leva" },
+    { value: "Makiatto", label: "Makiatto" },
+    { value: "Mechty", label: "Mechty" },
+    { value: "Mosin-Nagant", label: "Mosin-Nagant" },
+    { value: "Nikketa", label: "Nikketa" },
+    { value: "Papasha", label: "Papasha" },
+    { value: "Peri", label: "Peri" },
+    { value: "Peritya", label: "Peritya" },
+    { value: "Qiongjiu", label: "Qiongjiu" },
+    { value: "Qiuhua", label: "Qiuhua" },
+    { value: "Robella", label: "Robella" },
+    { value: "Sabrina", label: "Sabrina" },
+    { value: "Springfield", label: "Springfield" },
+    { value: "Suomi", label: "Suomi" },
+    { value: "Tololo", label: "Tololo" },
+    { value: "Ullrid", label: "Ullrid" },
+    { value: "Vector", label: "Vector" },
+    { value: "Vepley", label: "Vepley" },
+    { value: "Yoohee", label: "Yoohee" },
+    { value: "Zhaohui", label: "Zhaohui" },
+    { value: "Cheeta", label: "Cheeta" },
+    { value: "Colphne", label: "Colphne" },
+    { value: "Groza", label: "Groza" },
+    { value: "Krolik", label: "Krolik" },
+    { value: "Ksenia", label: "Ksenia" },
+    { value: "Littara", label: "Littara" },
+    { value: "Lotta", label: "Lotta" },
+    { value: "Nagant", label: "Nagant" },
+    { value: "Nemesis", label: "Nemesis" },
+    { value: "Sharkry", label: "Sharkry" },
+  ];
 
   return (
     <div className="gfl-page-center">
@@ -78,12 +122,34 @@ export default function InputPage() {
               <label className="gfl-label" htmlFor={`doll${i}`}>
                 Doll {i}:
               </label>
-              <input
-                id={`doll${i}`}
+              <Select
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    border: "1px solid #000",
+                    padding: "4px 8px",
+                    borderRadius: "0.375rem",
+                    boxShadow: state.isFocused
+                      ? "0 0 0 2px rgba(59, 130, 246, 0.5)"
+                      : "",
+                  }),
+                }}
+                inputId={`doll${i}`}
                 name={`doll${i}`}
-                value={form[`doll${i}`]}
-                onChange={handleChange}
-                className="gfl-input"
+                options={dollOptions}
+                // className="gfl-input"
+                isClearable
+                isSearchable
+                value={
+                  dollOptions.find((opt) => opt.value === form[`doll${i}`]) ||
+                  null
+                }
+                onChange={(selectedOption) =>
+                  setForm((prevForm) => ({
+                    ...prevForm,
+                    [`doll${i}`]: selectedOption ? selectedOption.value : "",
+                  }))
+                }
               />
             </div>
           ))}

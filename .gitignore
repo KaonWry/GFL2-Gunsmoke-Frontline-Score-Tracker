@@ -3,3 +3,4 @@
 /backend/db_add.py
 /backend/test
 /frontend-old
+/backend/__pycache__
