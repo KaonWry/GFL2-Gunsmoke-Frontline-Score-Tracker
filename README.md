@@ -37,14 +37,6 @@ Initialize the database:
 python db_init.py
 ```
 
-Run the Flask backend:
-
-```sh
-python app.py
-```
-
-The API will be available at [http://localhost:5000](http://localhost:5000).
-
 ---
 
 ### 2. Frontend
@@ -58,17 +50,22 @@ cd frontend
 npm install
 ```
 
-Run the Next.js development server:
+---
+
+### 3. Run the servers
+
+Run both flask and Next development server:
 
 ```sh
+cd frontend
 npm run dev
 ```
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
+The API will be available at [http://localhost:5000](http://localhost:5000), while the web app will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
 
-### 3. Using the App
+### 4. Using the App
 
 - **Countdown:**  
   Go to `/countdown` (or `/`) to see a live countdown to the next Gunsmoke Frontline, the current day and countdown until server reset during Gunsmoke Frontline.
@@ -101,22 +98,22 @@ Below are the explanations for each metric:
   The total number of attempts the player has made.
 
 - **Participation Rate:**  
-  The percentage of  attempts that a player actually participated in during the event.  
+  The percentage of attempts that a player actually participated in during the event.  
   _Formula:_  
   `Participation Rate = Attempt Count / 14`
 
 - **Absolute Efficiency:**  
   A measure of how close the player's total score is to their theoretical maximum, assuming they played every possible attempt (7 days, twice a day). A lower value means the player either missed attempts or didn't perform close to their best in each attempt.  
   _Formula:_  
-  `Absolute Efficiency = Total Score / (Highest Score × 14)`  
+  `Absolute Efficiency = Total Score / (Highest Score × 14)`
 
 - **Relative Efficiency:**  
-  A measure of how close the player's total score is to their theoretical maximum, based only on the number of attempts they actually made. It shows how efficiently a player performed in the attempts they actually made, regardless of how many times they played.
+  A measure of how close the player's total score is to their theoretical maximum, based only on the number of attempts they actually made. It shows how efficiently a player performed in the attempts they actually made, regardless of how many times they played.  
   _Formula:_  
-  `Relative Efficiency = Total Score / (Highest Score × Attempt Count)`  
+  `Relative Efficiency = Total Score / (Highest Score × Attempt Count)`
 
 - **Peak-Average Gap:**  
-  The difference between the player's highest score and their average score. It shows the consistency of the player. A smaller gap means the player performs close to their best most of the time, while a larger gap suggests occasional high peaks but lower average performance.
+  The difference between the player's highest score and their average score. It shows the consistency of the player. A smaller gap means the player performs close to their best most of the time, while a larger gap suggests occasional high peaks but lower average performance.  
   _Formula:_  
   `Peak-Average Gap = Highest Score - (Total Score / Count)`
 
