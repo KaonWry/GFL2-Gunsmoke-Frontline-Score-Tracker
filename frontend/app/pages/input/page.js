@@ -102,21 +102,6 @@ export default function InputPage() {
               className="gfl-input"
             />
           </div>
-          <div>
-            <label className="gfl-label" htmlFor="score">
-              Score:
-            </label>
-            <input
-              id="score"
-              name="score"
-              type="number"
-              value={form.score}
-              onChange={handleChange}
-              required
-              min="0"
-              className="gfl-input"
-            />
-          </div>
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i}>
               <label className="gfl-label" htmlFor={`doll${i}`}>
@@ -137,7 +122,6 @@ export default function InputPage() {
                 inputId={`doll${i}`}
                 name={`doll${i}`}
                 options={dollOptions}
-                // className="gfl-input"
                 isClearable
                 isSearchable
                 value={
@@ -153,6 +137,21 @@ export default function InputPage() {
               />
             </div>
           ))}
+          <div>
+            <label className="gfl-label" htmlFor="score">
+              Score:
+            </label>
+            <input
+              id="score"
+              name="score"
+              type="number"
+              value={form.score}
+              onChange={handleChange}
+              required
+              min="0"
+              className="gfl-input"
+            />
+          </div>
           <button type="submit" className="gfl-btn-submit">
             Submit
           </button>
