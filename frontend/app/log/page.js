@@ -102,54 +102,65 @@ export default function LogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
+    <div className="gfl-page-center">
       <h1 className="gfl-header">Attempts Log</h1>
-      <div className="gfl-list-container w-full">
-        <div className="gfl-list-header">
-          {columns.map((col) => (
-            <div
-              key={col.key}
-              className="gfl-list-header-item"
-              style={col.key === "action" ? { textAlign: "center" } : {}}
-            >
-              {col.label}
-            </div>
-          ))}
-        </div>
-        {attempts.length === 0 ? (
-          <div className="text-center py-4 text-gray-500">
-            No attempts found.
-          </div>
-        ) : (
-          <div className="gfl-list">
-            {attempts.map((a, idx) => (
-              <div
-                key={a.id}
-                className={`gfl-list-row ${
-                  idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"
-                }`}
-              >
-                <div className="gfl-list-cell">{a.player_name}</div>
-                <div className="gfl-list-cell">{a.score}</div>
-                <div className="gfl-list-cell">{a.doll1}</div>
-                <div className="gfl-list-cell">{a.doll2}</div>
-                <div className="gfl-list-cell">{a.doll3}</div>
-                <div className="gfl-list-cell">{a.doll4}</div>
-                <div className="gfl-list-cell">{a.doll5}</div>
-                <div className="gfl-list-cell">{a.date}</div>
-                <div className="gfl-list-cell flex justify-center">
-                  <button
-                    onClick={() => handleDeleteClick(a.id)}
-                    className="gfl-btn gfl-btn-red"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+      <div className="overflow-x-auto w-full">
+        <table className="gfl-table">
+          <thead>
+            <tr className="gfl-table-header">
+              {columns.map((col) => (
+                <th
+                  key={col.key}
+                  className={`gfl-table-cell font-semibold ${
+                    col.key === "action" ? "text-center" : ""
+                  }`}
+                >
+                  {col.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {attempts.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="text-center py-4 text-gray-500"
+                >
+                  No attempts found.
+                </td>
+              </tr>
+            ) : (
+              attempts.map((a, idx) => (
+                <tr
+                  key={a.id}
+                  className={
+                    idx % 2 === 0 ? "gfl-table-row-even" : "gfl-table-row-odd"
+                  }
+                >
+                  <td className="gfl-table-cell">{a.player_name}</td>
+                  <td className="gfl-table-cell">{a.score}</td>
+                  <td className="gfl-table-cell">{a.doll1}</td>
+                  <td className="gfl-table-cell">{a.doll2}</td>
+                  <td className="gfl-table-cell">{a.doll3}</td>
+                  <td className="gfl-table-cell">{a.doll4}</td>
+                  <td className="gfl-table-cell">{a.doll5}</td>
+                  <td className="gfl-table-cell">{a.date}</td>
+                  <td className="gfl-table-cell text-center">
+                    <button
+                      onClick={() => handleDeleteClick(a.id)}
+                      className="gfl-btn gfl-btn-red"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
+
       <div className="flex gap-4 mt-4">
         <button onClick={handleImportCSV} className="gfl-btn gfl-btn-green">
           Import CSV

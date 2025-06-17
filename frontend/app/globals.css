@@ -11,36 +11,30 @@
   @apply text-4xl font-bold mb-6 text-center;
 }
 
-/* List Styles */
-.gfl-list-container {
-  width: 100vw;
-  max-width: none;
-  margin-left: 10px;
-  margin-right: 10px;
+/* Table Styles */
+.gfl-table {
+  border-collapse: collapse;
+  width: 100%;
+  @apply w-full text-left border-collapse;
 }
-.gfl-list-header {
-  @apply flex bg-gray-500 overflow-x-auto;
+.gfl-table th,
+.gfl-table td {
+  padding: 0.5rem 1rem;
 }
-.gfl-list-header-item {
-  @apply flex-1 px-4 py-2 font-semibold text-gray-50 text-left transition-colors bg-transparent border-none;
+.gfl-table-header {
+  @apply bg-gray-500 text-gray-50;
 }
-.gfl-list-clickable {
-  @apply hover:text-blue-900 hover:bg-gray-300 cursor-pointer;
+.gfl-table-cell{
+  @apply px-4 py-2
 }
-.gfl-list {
-  @apply flex flex-col;
+.gfl-table-clickable {
+  @apply hover:text-blue-900 hover:bg-gray-300 cursor-pointer select-none;
 }
-.gfl-list-row {
-  @apply flex border-b border-gray-200;
-}
-.gfl-list-row-even {
+.gfl-table-row-even {
   @apply bg-white;
 }
-.gfl-list-row-odd {
+.gfl-table-row-odd {
   @apply bg-gray-200;
-}
-.gfl-list-cell {
-  @apply flex-1 px-4 py-2 text-left;
 }
 
 /* Button Styles */

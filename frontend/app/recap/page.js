@@ -241,69 +241,79 @@ export default function RecapPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 flex flex-col items-center">
+    <div className="gfl-page-center">
       <h1 className="gfl-header">Player Recap</h1>
-      <div className="gfl-list-container w-full">
-        <div className="gfl-list-header">
-          {columns.map((col) => (
-            <button
-              key={col.key}
-              className="gfl-list-header-item gfl-list-clickable"
-              onClick={() => handleSort(col.key)}
-              type="button"
-            >
-              {col.label}
-              <span className="ml-1">{sortArrow(col.key)}</span>
-            </button>
-          ))}
-        </div>
-        {sortedRecap.length === 0 ? (
-          <div className="text-center py-4 text-gray-500">
-            No player data found.
-          </div>
-        ) : (
-          <div className="gfl-list">
-            {sortedRecap.map((player, idx) => (
-              <div
-                key={player.player_name}
-                className={`gfl-list-clickable gfl-list-row ${
-                  idx % 2 === 0 ? "gfl-list-row-even" : "gfl-list-row-odd"
-                }`}
-                onClick={() => setSelectedPlayer(player)}
-                style={{ cursor: "pointer" }}
-                tabIndex={0}
-                role="button"
-                aria-label={`Show details for ${player.player_name}`}
-              >
-                <div className="gfl-list-cell">{player.player_name}</div>
-                <div className="gfl-list-cell">{player.highest_score}</div>
-                <div className="gfl-list-cell">{player.total_score}</div>
-                <div className="gfl-list-cell">{player.most_used_doll}</div>
-                <div className="gfl-list-cell">{player.attempts}</div>
-                <div className="gfl-list-cell">
-                  {typeof player.participation_rate === "number"
-                    ? (player.participation_rate * 100).toFixed(2) + "%"
-                    : ""}
-                </div>
-                <div className="gfl-list-cell">
-                  {typeof player.absolute_efficiency === "number"
-                    ? (player.absolute_efficiency * 100).toFixed(2) + "%"
-                    : ""}
-                </div>
-                <div className="gfl-list-cell">
-                  {typeof player.relative_efficiency === "number"
-                    ? (player.relative_efficiency * 100).toFixed(2) + "%"
-                    : ""}
-                </div>
-                <div className="gfl-list-cell">
-                  {typeof player.peak_average_gap === "number"
-                    ? player.peak_average_gap.toFixed(2)
-                    : ""}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+      <div className="overflow-x-auto w-full">
+        <table className="gfl-table">
+          <thead>
+            <tr className="gfl-table-header">
+              {columns.map((col) => (
+                <th
+                  key={col.key}
+                  className="font-semibold gfl-table-clickable"
+                  onClick={() => handleSort(col.key)}
+                >
+                  <div className="flex items-center justify-between gap-1">
+                    {col.label}
+                    <span className="w-3 text-sm">{sortArrow(col.key)}</span>
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {sortedRecap.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="text-center py-4 text-gray-500"
+                >
+                  No player data found.
+                </td>
+              </tr>
+            ) : (
+              sortedRecap.map((player, idx) => (
+                <tr
+                  key={player.player_name}
+                  className={
+                    idx % 2 === 0 ? "gfl-table-row-even" : "gfl-table-row-odd"
+                  }
+                  onClick={() => setSelectedPlayer(player)}
+                  style={{ cursor: "pointer" }}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Show details for ${player.player_name}`}
+                >
+                  <td className="gfl-table-cell">{player.player_name}</td>
+                  <td className="gfl-table-cell">{player.highest_score}</td>
+                  <td className="gfl-table-cell">{player.total_score}</td>
+                  <td className="gfl-table-cell">{player.most_used_doll}</td>
+                  <td className="gfl-table-cell">{player.attempts}</td>
+                  <td className="gfl-table-cell">
+                    {typeof player.participation_rate === "number"
+                      ? (player.participation_rate * 100).toFixed(2) + "%"
+                      : ""}
+                  </td>
+                  <td className="gfl-table-cell">
+                    {typeof player.absolute_efficiency === "number"
+                      ? (player.absolute_efficiency * 100).toFixed(2) + "%"
+                      : ""}
+                  </td>
+                  <td className="gfl-table-cell">
+                    {typeof player.relative_efficiency === "number"
+                      ? (player.relative_efficiency * 100).toFixed(2) + "%"
+                      : ""}
+                  </td>
+                  <td className="gfl-table-cell">
+                    {typeof player.peak_average_gap === "number"
+                      ? player.peak_average_gap.toFixed(2)
+                      : ""}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
       <button onClick={handleExportCSV} className="mt-4 gfl-btn gfl-btn-blue">
         Export to CSV
