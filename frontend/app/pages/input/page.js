@@ -158,8 +158,8 @@ export default function InputPage() {
         </form>
       </div>
       {result && (
-        <div className="gfl-modal-bg">
-          <div className="gfl-modal">
+        <div className="gfl-modal-bg" onClick={() => setResult("")}>
+          <div className="gfl-modal" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 text-gray-800">{result}</div>
             <button onClick={() => setResult("")} className="gfl-modal-btn">
               OK
