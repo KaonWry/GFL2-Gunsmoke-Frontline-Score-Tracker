@@ -102,7 +102,7 @@ export default function LogPage() {
   };
 
   return (
-    <div className="gfl-page-center">
+    <div className="gfl-page-center pt-16 pb-5">
       <h1 className="gfl-header">Attempts Log</h1>
       <div className="overflow-x-auto w-full">
         <table className="gfl-table">

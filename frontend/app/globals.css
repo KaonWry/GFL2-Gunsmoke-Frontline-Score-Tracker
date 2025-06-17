@@ -2,6 +2,7 @@
 
 /* Page Layouts */
 .gfl-page-center {
+  padding-top: 4rem;
   @apply flex flex-col items-center justify-center min-h-screen bg-gray-50;
 }
 .gfl-card {
@@ -22,9 +23,11 @@
   padding: 0.5rem 1rem;
 }
 .gfl-table-header {
+  white-space: nowrap;
   @apply bg-gray-500 text-gray-50;
 }
 .gfl-table-cell{
+  white-space: nowrap;
   @apply px-4 py-2
 }
 .gfl-table-clickable {

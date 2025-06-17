@@ -85,7 +85,7 @@ export default function InputPage() {
   ];
 
   return (
-    <div className="gfl-page-center">
+    <div className="gfl-page-center pt-7">
       <div className="gfl-card">
         <h1 className="gfl-header">Add Attempt</h1>
         <form onSubmit={handleSubmit} className="gfl-form">
