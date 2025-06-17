@@ -2,10 +2,10 @@
 import Link from 'next/link';
 
 const navLinks = [
-  { href: '/pages/countdown', label: 'Countdown' },
-  { href: '/pages/input', label: 'Add Attempt' },
-  { href: '/pages/log', label: 'Log' },
-  { href: '/pages/recap', label: 'Recap' },
+  { href: '/countdown', label: 'Countdown' },
+  { href: '/input', label: 'Add Attempt' },
+  { href: '/log', label: 'Log' },
+  { href: '/recap', label: 'Recap' },
 ];
 
 export default function Navbar() {

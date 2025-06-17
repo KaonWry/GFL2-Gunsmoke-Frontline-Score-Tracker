@@ -1,1 +1,1 @@
-export { default } from './pages/countdown/page';
+export { default } from './countdown/page';
